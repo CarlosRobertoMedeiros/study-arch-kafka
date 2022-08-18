@@ -1,0 +1,14 @@
+server:
+  port: 8080
+
+spring:
+  kafka:
+    producer:
+      #[::1]:9092 Para linux
+      bootstrap-server: "localhost:9092"
+      key-serializer: "org.apache.kafka.common.serialization.StringSerializer"
+      value-serializer: "org.springframework.kafka.support.serializer.JsonSerializer"
+
+  jackson:
+    serialization:
+      FAIL_ON_EMPTY_BEANS: "false"
