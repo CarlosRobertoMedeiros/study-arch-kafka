@@ -1,0 +1,13 @@
+server:
+  port: 8090
+
+spring:
+  kafka:
+    consumer:
+      #[::1]:9092 Para linux
+      bootstrap-server: "localhost:9092"
+      group-id: "grp-mensagens-recebidas"
+
+topic:
+  consumer:
+    name: "TOPIC_MENSAGENS_RECEBIDAS"

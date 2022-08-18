@@ -9,6 +9,6 @@
 	- Carlos Roberto Medeiros de Lima
 	
 ## General
-	- Send Message using Kafka
+	- Received Message using Kafka
 
 
