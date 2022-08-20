@@ -15,10 +15,10 @@ public class MensagemUseCase {
         this.stockHistoryRepository = stockHistoryRepository;
     }
     public void enviarDadosDeHistoricoDoEstoque(StockHistoryRequest stockHistoryRequest) {
-        var stockHistory = StockHistoryMapper.INSTANCE.dtoRequestToEntity(stockHistoryRequest);
+        var stockHistoryEntity = StockHistoryMapper.INSTANCE.dtoRequestToEntity(stockHistoryRequest);
         //StockHistory stockHistory = StockHistory.newBuilder().build();
 
-        this.stockHistoryRepository.enviarDadosDeHistoricoDoEstoque(stockHistory);
+        this.stockHistoryRepository.enviarDadosDeHistoricoDoEstoque(stockHistoryEntity);
     }
 
 

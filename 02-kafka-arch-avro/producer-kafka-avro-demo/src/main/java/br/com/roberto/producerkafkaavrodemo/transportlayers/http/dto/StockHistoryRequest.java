@@ -9,6 +9,8 @@ public class StockHistoryRequest {
     private float price;
     private float amount;
 
+    private int tradeId;
+
     public int getTradeQuantity() {
         return tradeQuantity;
     }
@@ -55,5 +57,13 @@ public class StockHistoryRequest {
 
     public void setAmount(float amount) {
         this.amount = amount;
+    }
+
+    public int getTradeId() {
+        return tradeId;
+    }
+
+    public void setTradeId(int tradeId) {
+        this.tradeId = tradeId;
     }
 }

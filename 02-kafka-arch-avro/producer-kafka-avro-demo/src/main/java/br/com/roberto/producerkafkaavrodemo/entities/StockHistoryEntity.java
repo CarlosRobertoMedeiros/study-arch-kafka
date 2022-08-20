@@ -9,6 +9,8 @@ public class StockHistoryEntity {
     private float price;
     private float amount;
 
+    private int tradeId;
+
     public int getTradeQuantity() {
         return tradeQuantity;
     }
@@ -57,6 +59,14 @@ public class StockHistoryEntity {
         this.amount = amount;
     }
 
+    public int getTradeId() {
+        return tradeId;
+    }
+
+    public void setTradeId(int tradeId) {
+        this.tradeId = tradeId;
+    }
+
     @Override
     public String toString() {
         return "StockHistoryEntity{" +
@@ -66,6 +76,7 @@ public class StockHistoryEntity {
                 ", tradeType='" + tradeType + '\'' +
                 ", price=" + price +
                 ", amount=" + amount +
+                ", tradeId=" + tradeId +
                 '}';
     }
 }

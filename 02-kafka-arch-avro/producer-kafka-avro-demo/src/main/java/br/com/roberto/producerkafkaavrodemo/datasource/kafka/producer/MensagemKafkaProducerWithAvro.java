@@ -1,12 +1,13 @@
 package br.com.roberto.producerkafkaavrodemo.datasource.kafka.producer;
 
+import br.com.roberto.producerkafkaavrodemo.datasource.kafka.producer.avro.schema.StockHistoryAvro;
 import br.com.roberto.producerkafkaavrodemo.entities.StockHistoryEntity;
 import br.com.roberto.producerkafkaavrodemo.repositories.StockHistoryRepository;
-import org.springframework.kafka.core.KafkaProducerException;
-import org.springframework.kafka.core.KafkaSendCallback;
 import org.springframework.kafka.core.KafkaTemplate;
+import org.springframework.kafka.support.SendResult;
 import org.springframework.stereotype.Component;
 import org.springframework.util.concurrent.ListenableFuture;
+import org.springframework.util.concurrent.ListenableFutureCallback;
 
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -15,30 +16,46 @@ import java.util.logging.Logger;
 public class MensagemKafkaProducerWithAvro implements StockHistoryRepository {
 
     private static Logger logger = Logger.getLogger(MensagemKafkaProducerWithAvro.class.getName());
-    private final KafkaTemplate<String, StockHistoryEntity> kafkaAlunoTemplate;
+    private final KafkaTemplate<String, StockHistoryAvro> kafkaStockHistoryTemplate;
 
-    public MensagemKafkaProducerWithAvro(KafkaTemplate<String, StockHistoryEntity> kafkaAlunoTemplate) {
+    public MensagemKafkaProducerWithAvro(KafkaTemplate<String, StockHistoryAvro> kafkaStockHistoryTemplate) {
 
-        this.kafkaAlunoTemplate = kafkaAlunoTemplate;
+        this.kafkaStockHistoryTemplate = kafkaStockHistoryTemplate;
     }
 
 
     @Override
     public void enviarDadosDeHistoricoDoEstoque(StockHistoryEntity stockHistoryEntity) {
-        ListenableFuture future = this.kafkaAlunoTemplate.send("TOPIC_MENSAGEM_ENVIO_STOCK", stockHistoryEntity);
 
-        future.addCallback(new KafkaSendCallback() {
+        StockHistoryAvro stockHistoryAvro = converteEntidadeParaBinaryAvro(stockHistoryEntity);
+
+        ListenableFuture<SendResult<String,StockHistoryAvro>> future = this.kafkaStockHistoryTemplate.send("Topic_Mensagem_Envio_Stock", stockHistoryAvro);
+
+        future.addCallback(new ListenableFutureCallback<SendResult<String, StockHistoryAvro>>(){
+
             @Override
-            public void onFailure(KafkaProducerException e) {
-                logger.log(Level.WARNING,"Error Message not sent to Topic "+ e.getMessage());
+            public void onSuccess(SendResult<String, StockHistoryAvro> result) {
+                logger.log(Level.INFO,"Message send to Topic ".concat(result.toString()));
             }
 
             @Override
-            public void onSuccess(Object result) {
-                logger.log(Level.INFO,"Message send to Topic "+ result.toString());
+            public void onFailure(Throwable ex) {
+                logger.log(Level.WARNING,"Error Message not sent to Topic ".concat(ex.getMessage()));
             }
         });
-
-
     }
+
+    private StockHistoryAvro converteEntidadeParaBinaryAvro(StockHistoryEntity stockHistoryEntity) {
+        StockHistoryAvro stockHistoryAvro = StockHistoryAvro.newBuilder().build();
+        stockHistoryAvro.setTradeType(stockHistoryEntity.getTradeType());
+        stockHistoryAvro.setAmount(stockHistoryEntity.getAmount());
+        stockHistoryAvro.setPrice(stockHistoryEntity.getPrice());
+        stockHistoryAvro.setStockName(stockHistoryEntity.getStockName());
+        stockHistoryAvro.setTradeQuantity(stockHistoryEntity.getTradeQuantity());
+        stockHistoryAvro.setTradeMarket(stockHistoryEntity.getTradeMarket());
+        stockHistoryAvro.setTradeId(stockHistoryEntity.getTradeId());
+        return stockHistoryAvro;
+    }
+
+
 }

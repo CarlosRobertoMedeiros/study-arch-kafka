@@ -1,7 +1,8 @@
 {
   "type": "record",
-  "name": "StockHistory",
-  "namespace": "br.com.roberto.avro.schema",
+  "name": "StockHistoryAvro",
+  //"namespace": "br.com.roberto.avro.schema",
+  "namespace": "br.com.roberto.producerkafkaavrodemo.datasource.kafka.producer.avro.schema",
   "fields": [
     {
       "name": "tradeId",

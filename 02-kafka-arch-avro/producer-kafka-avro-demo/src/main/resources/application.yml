@@ -3,10 +3,14 @@ server:
 
 spring:
   kafka:
-    bootstrap-server: "localhost:9092"
-    key-serializer: "org.apache.kafka.common.serialization.StringSerializer"
-    value-serializer: "io.confluent.kafka.serializers.KafkaAvroSerializer"
-    properties:
-      schema:
-        registry:
-          url: "localhost:8081"
+    producer:
+      bootstrap-servers: "localhost:9092"
+      key-serializer: "org.apache.kafka.common.serialization.StringSerializer"
+      value-serializer: "io.confluent.kafka.serializers.KafkaAvroSerializer"
+      properties:
+        auto:
+          register:
+            schemas: true
+        schema:
+          registry:
+            url: "http://127.0.0.1:8081"
