@@ -1,6 +1,6 @@
 package br.com.roberto.producerkafkaavrodemo.datasource.kafka.producer;
 
-import br.com.roberto.producerkafkaavrodemo.datasource.kafka.producer.avro.schema.StockHistoryAvro;
+import br.com.roberto.avro.schema.StockHistoryAvro;
 import br.com.roberto.producerkafkaavrodemo.entities.StockHistoryEntity;
 import br.com.roberto.producerkafkaavrodemo.repositories.StockHistoryRepository;
 import org.springframework.kafka.core.KafkaTemplate;
