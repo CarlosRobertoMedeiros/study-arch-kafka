@@ -1,26 +1,28 @@
-
 server:
   port: 8110
 
 spring:
   kafka:
     properties:
-      bootstrap-servers: "localhost:9092"
       schema:
         registry:
           url: "http://127.0.0.1:8081"
+      specific:
+        avro:
+          reader: "true"
+
     consumer:
+      client-id: "consumidor-sistema"
       group-id: "grp-comunicacao-sistema-a"
-      autoOffsetReset: latest
+      autoOffsetReset: "earliest"
       key-deserializer: "org.apache.kafka.common.serialization.StringDeserializer"
       value-deserializer: "io.confluent.kafka.serializers.KafkaAvroDeserializer"
-      properties:
-        specific.avro.reader: true
 
-
-        specific:
-          avro:
-            reader: "true"
 avro:
   topic:
     name: "Topic_Mensagem_Envio_Stock"
+
+auto:
+  create:
+    topics:
+      enable: true

@@ -3,14 +3,25 @@ server:
 
 spring:
   kafka:
-    producer:
+    properties:
       bootstrap-servers: "localhost:9092"
+      auto:
+        register:
+          schemas: true
+      schema:
+        registry:
+          url: "http://127.0.0.1:8081"
+
+    producer:
+      client-id: "produtor-sistema"
       key-serializer: "org.apache.kafka.common.serialization.StringSerializer"
       value-serializer: "io.confluent.kafka.serializers.KafkaAvroSerializer"
-      properties:
-        auto:
-          register:
-            schemas: true
-        schema:
-          registry:
-            url: "http://127.0.0.1:8081"
+
+avro:
+  topic:
+    name: "Topic_Mensagem_Envio_Stock"
+
+auto:
+  create:
+    topics:
+      enable: true

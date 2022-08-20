@@ -3,6 +3,7 @@ package br.com.roberto.producerkafkaavrodemo.datasource.kafka.producer;
 import br.com.roberto.avro.schema.StockHistoryAvro;
 import br.com.roberto.producerkafkaavrodemo.entities.StockHistoryEntity;
 import br.com.roberto.producerkafkaavrodemo.repositories.StockHistoryRepository;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.kafka.core.KafkaTemplate;
 import org.springframework.kafka.support.SendResult;
 import org.springframework.stereotype.Component;
@@ -15,6 +16,8 @@ import java.util.logging.Logger;
 @Component
 public class MensagemKafkaProducerWithAvro implements StockHistoryRepository {
 
+    @Value("${avro.topic.name}")
+    private String topicName;
     private static Logger logger = Logger.getLogger(MensagemKafkaProducerWithAvro.class.getName());
     private final KafkaTemplate<String, StockHistoryAvro> kafkaStockHistoryTemplate;
 
@@ -29,7 +32,7 @@ public class MensagemKafkaProducerWithAvro implements StockHistoryRepository {
 
         StockHistoryAvro stockHistoryAvro = converteEntidadeParaBinaryAvro(stockHistoryEntity);
 
-        ListenableFuture<SendResult<String,StockHistoryAvro>> future = this.kafkaStockHistoryTemplate.send("Topic_Mensagem_Envio_Stock", stockHistoryAvro);
+        ListenableFuture<SendResult<String,StockHistoryAvro>> future = this.kafkaStockHistoryTemplate.send(topicName, stockHistoryAvro);
 
         future.addCallback(new ListenableFutureCallback<SendResult<String, StockHistoryAvro>>(){
 

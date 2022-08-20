@@ -20,8 +20,11 @@ public class Config {
 
     @Bean
     public KafkaListenerContainerFactory<ConcurrentMessageListenerContainer<String, StockHistoryAvro>> kafkaListenerContainerFactory(KafkaProperties kafkaProperties) {
-        ConcurrentKafkaListenerContainerFactory<String, StockHistoryAvro> factory = new ConcurrentKafkaListenerContainerFactory<>();
+        ConcurrentKafkaListenerContainerFactory<String, StockHistoryAvro> factory = new ConcurrentKafkaListenerContainerFactory<String, StockHistoryAvro>();
         factory.setConsumerFactory(consumerFactory(kafkaProperties));
+        factory.getContainerProperties().setPollTimeout(1000);
+        //factory.getContainerProperties().setAckMode(ContainerProperties.AckMode.MANUAL);
+        //factory.getContainerProperties().setSyncCommits(Boolean.TRUE);
         return factory;
     }
 }
