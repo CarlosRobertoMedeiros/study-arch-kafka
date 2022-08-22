@@ -12,11 +12,17 @@ spring:
           reader: "true"
 
     consumer:
-      client-id: "consumidor-sistema"
       group-id: "grp-comunicacao-sistema-a"
+      client-id: "consumidor-sistema"
       autoOffsetReset: "earliest"
       key-deserializer: "org.apache.kafka.common.serialization.StringDeserializer"
       value-deserializer: "io.confluent.kafka.serializers.KafkaAvroDeserializer"
+      enable-auto-commit: "false"
+      auto-offset-reset: "earliest"
+
+    listener:
+      ack-mode: "manual"
+
 
 avro:
   topic:
