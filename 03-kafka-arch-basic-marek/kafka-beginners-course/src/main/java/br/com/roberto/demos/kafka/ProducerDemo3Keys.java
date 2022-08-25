@@ -7,8 +7,8 @@ import java.util.Properties;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-public class ProducerDemo2WithCallBack {
-    private static final Logger logger = Logger.getLogger(ProducerDemo2WithCallBack.class.getSimpleName());
+public class ProducerDemo3Keys {
+    private static final Logger logger = Logger.getLogger(ProducerDemo3Keys.class.getSimpleName());
     public static void main(String[] args) throws InterruptedException {
         logger.info("I am a Kafka Producer !");
 
@@ -22,8 +22,14 @@ public class ProducerDemo2WithCallBack {
         KafkaProducer<String,String> producer = new KafkaProducer<>(properties);
 
         for (int i=0; i<10;i++) {
+
+            String topic = "demo_java";
+            String value = "hello world "+i;
+            String key = "id_"+i;
+
+
             //create and producer record
-            ProducerRecord<String, String> producerRecord = new ProducerRecord<>("demo_java","hello world "+ i);
+            ProducerRecord<String, String> producerRecord = new ProducerRecord<>(topic, key, value);
             //send the data - asynchronous
             producer.send(producerRecord, new Callback() {
                 @Override
@@ -32,6 +38,7 @@ public class ProducerDemo2WithCallBack {
                     if (e == null) {
                         logger.info("Received new metadata/ \n" +
                                 "Topic: " + metadata.topic() + "\n" +
+                                "Key: " + producerRecord.key() + "\n" +
                                 "Partition: " + metadata.partition() + "\n" +
                                 "Offset: " + metadata.offset() + "\n" +
                                 "Timestamp: " + metadata.timestamp());
@@ -44,7 +51,7 @@ public class ProducerDemo2WithCallBack {
             });
 
 
-                Thread.sleep(1000);
+                //Thread.sleep(1000);
 
 
         }
