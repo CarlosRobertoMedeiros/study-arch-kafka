@@ -6,15 +6,16 @@ import org.apache.kafka.clients.consumer.ConsumerRecords;
 import org.apache.kafka.clients.consumer.KafkaConsumer;
 import org.apache.kafka.common.errors.WakeupException;
 import org.apache.kafka.common.serialization.StringDeserializer;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.time.Duration;
 import java.util.Arrays;
 import java.util.Properties;
 import java.util.logging.Level;
-import java.util.logging.Logger;
 
 public class ConsumerDemo2WithShutdown {
-    private static final Logger logger = Logger.getLogger(ConsumerDemo2WithShutdown.class.getSimpleName());
+    private static final Logger logger = LoggerFactory.getLogger(ConsumerDemo2WithShutdown.class.getSimpleName());
     public static void main(String[] args)  {
         logger.info("I am a Kafka Consumer !");
 
@@ -75,7 +76,7 @@ public class ConsumerDemo2WithShutdown {
             logger.info("Wake up Exception !!");
             //We ignore this as this is an expected exception when closing a consumer
         }catch (Exception e){
-            logger.severe("Unexpected Exception");
+            logger.error("Unexpected Exception");
         }finally {
             consumer.close();  //this will also commit the offsets if need be
             logger.info("The consumer is now gracefully closed !!");

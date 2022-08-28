@@ -7,16 +7,17 @@ import org.apache.kafka.clients.consumer.KafkaConsumer;
 import org.apache.kafka.clients.producer.*;
 import org.apache.kafka.common.serialization.StringDeserializer;
 import org.apache.kafka.common.serialization.StringSerializer;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.time.Duration;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.Properties;
 import java.util.logging.Level;
-import java.util.logging.Logger;
 
 public class ConsumerDemo {
-    private static final Logger logger = Logger.getLogger(ConsumerDemo.class.getSimpleName());
+    private static final Logger logger = LoggerFactory.getLogger(ConsumerDemo.class.getSimpleName());
     public static void main(String[] args) throws InterruptedException {
         logger.info("I am a Kafka Consumer !");
 

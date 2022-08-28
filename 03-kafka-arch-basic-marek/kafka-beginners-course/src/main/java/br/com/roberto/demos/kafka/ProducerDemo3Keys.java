@@ -2,13 +2,14 @@ package br.com.roberto.demos.kafka;
 
 import org.apache.kafka.clients.producer.*;
 import org.apache.kafka.common.serialization.StringSerializer;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.util.Properties;
 import java.util.logging.Level;
-import java.util.logging.Logger;
 
 public class ProducerDemo3Keys {
-    private static final Logger logger = Logger.getLogger(ProducerDemo3Keys.class.getSimpleName());
+    private static final Logger logger = LoggerFactory.getLogger(ProducerDemo3Keys.class.getSimpleName());
     public static void main(String[] args) throws InterruptedException {
         logger.info("I am a Kafka Producer !");
 
@@ -43,7 +44,7 @@ public class ProducerDemo3Keys {
                                 "Offset: " + metadata.offset() + "\n" +
                                 "Timestamp: " + metadata.timestamp());
                     } else {
-                        logger.log(Level.SEVERE, "Error while producing", e);
+                        logger.error("Error while producing", e);
                     }
                     ;
 
