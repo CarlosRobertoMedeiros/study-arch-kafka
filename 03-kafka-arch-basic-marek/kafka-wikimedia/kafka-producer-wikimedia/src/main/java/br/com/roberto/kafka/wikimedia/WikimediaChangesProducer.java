@@ -16,11 +16,17 @@ public class WikimediaChangesProducer {
 
         String bootstrapServer = "127.0.0.1:9092";
 
-        //create a producer properties
+        //create producer properties
         Properties properties = new Properties();
         properties.setProperty(ProducerConfig.BOOTSTRAP_SERVERS_CONFIG,bootstrapServer);
         properties.setProperty(ProducerConfig.KEY_SERIALIZER_CLASS_CONFIG, StringSerializer.class.getName());
         properties.setProperty(ProducerConfig.VALUE_SERIALIZER_CLASS_CONFIG,StringSerializer.class.getName());
+
+        //set safe producer configs in (kafka clients <= 2.8)
+        //properties.setProperty(ProducerConfig.ENABLE_IDEMPOTENCE_CONFIG,"true");
+        //properties.setProperty(ProducerConfig.ACKS_CONFIG,"all");
+        //properties.setProperty(ProducerConfig.RETRIES_CONFIG,Integer.toString(Integer.MAX_VALUE));
+        //properties.setProperty(ProducerConfig.MAX_IN_FLIGHT_REQUESTS_PER_CONNECTION,"5");
 
         //create a producer
         KafkaProducer<String,String> producer = new KafkaProducer<>(properties);
