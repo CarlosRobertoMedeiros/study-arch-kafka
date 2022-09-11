@@ -1,5 +1,6 @@
 package br.com.roberto.kafka.wikimedia;
 
+import com.google.gson.JsonParser;
 import org.apache.http.HttpHost;
 import org.apache.http.auth.AuthScope;
 import org.apache.http.auth.UsernamePasswordCredentials;
@@ -64,10 +65,19 @@ public class OpenSearchConsumer {
                 log.info("Recebidos:" + recordCount+ " registro(s)");
 
                 for (ConsumerRecord<String,String> record : records){
+
                     // send the record into OpenSearch
+
+                    //Geração de Idempotencia - Strategy 1 - Define on ID using kafka Record coordinates
+                    //String id = record.topic()+"_"+record.partition()+"_"+record.offset();
+
                     try{
+                        //Geração de Idempotencia - Strategy 2 - Trazer o Id do Sistema de acordo com o Json que retornou
+                        String id2 = extractId(record.value());
+
                         IndexRequest indexRequest = new IndexRequest("wikimedia")
-                                .source(record.value(), XContentType.JSON);
+                                .source(record.value(), XContentType.JSON)
+                                .id(id2);
                         IndexResponse response =  openSearchClient.index(indexRequest, RequestOptions.DEFAULT);
                         log.info(response.getId());
                     }catch (Exception e){
@@ -84,6 +94,15 @@ public class OpenSearchConsumer {
         //close things
 
 
+    }
+
+    private static String extractId(String json) {
+        return JsonParser.parseString(json)
+                .getAsJsonObject()
+                .get("meta")
+                .getAsJsonObject()
+                .get("id")
+                .getAsString();
     }
 
     private static KafkaConsumer<String, String> createKafkaConsumer() {
